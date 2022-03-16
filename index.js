@@ -1,3 +1,5 @@
+//TODO: Add unit tests for project
+
 const express = require('express')
 const fs = require('fs');
 const app = express()
@@ -15,6 +17,7 @@ app.get('/movies', (req, res) => {
         res.send( {"errors":[], "movies":[jsonDB.movies[Math.floor(Math.random() * jsonDB.movies.length) + 1]]});}
 })
 
+//TODO: genres custom validation
 app.post('/movies',
 body('title').isLength({ min: 1 , max: 255}).withMessage('cannot be empty or be longer than 255 characters'),
 body('year').matches(/\d/).withMessage('must contain a number'),
@@ -30,6 +33,7 @@ body('director').isLength({ min: 1 , max: 255}).withMessage('cannot be empty or 
   },
 );
 
+//TODO:  find best way to code this database search, maybe some library for database in JSON?
 function findMovies(query){
     console.log(query);
     let jsonDB = readJsonFile();
@@ -38,6 +42,7 @@ function findMovies(query){
     for (var i = 0; i < jsonDB.movies.length; i++) {
         if((parseInt(jsonDB.movies[i].runtime,10) > parseInt(query.duration,10)-10 && parseInt(jsonDB.movies[i].runtime,10) < (parseInt(query.duration,10)+10)) && containsGenres(jsonDB.movies[i].genres, query.genres)){
             jsonResponse.push(jsonDB.movies[i]);
+            //TODO: add sort function
         }
     }
     } else if(query.duration){
@@ -49,6 +54,7 @@ function findMovies(query){
     } else if(query.genres){
         for (var i = 0; i < jsonDB.movies.length; i++) {
             if(containsGenres(jsonDB.movies[i].genres, query.genres)){
+            //TODO: add sort function
                 jsonResponse.push(jsonDB.movies[i]);
             }
         }
@@ -68,6 +74,7 @@ function containsGenres(jsonObjectGenres, genres){
     return containsGenres;
 }
 
+//TODO: refactor this if we use JSON DB library
 function readJsonFile(){
 try {
     let rawdata = fs.readFileSync('./data/db.json');
