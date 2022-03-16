@@ -1,5 +1,3 @@
-# RecruitmentTask
-
 ## The Software House - Node.js Developer recruitment task
 
 Hey there!
